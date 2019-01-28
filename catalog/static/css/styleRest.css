@@ -1,0 +1,157 @@
+@font-face{
+  font-family: monserrat;
+  src: url('../font/Montserrat/Montserrat-Medium.ttf');
+}
+@font-face{
+  font-family: oswald;
+  src: url('../font/Oswald/Oswald-Medium.ttf');
+}
+.tituloSeccion{
+  font-size: 2.7em;
+  margin-bottom: 32px;
+  font-family: monserrat;
+}
+.subtituloSeccion{
+  font-family: oswald;
+}
+.top-nav-collapse {
+  background-color: rgba(0,60,80,.8) !important;
+}
+
+.navbar:not(.top-nav-collapse) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 991px) {
+  .navbar:not(.top-nav-collapse) {
+    background: rgba(0,60,80,.8) !important;
+  }
+}
+.section{
+  line-height: 2;
+}
+#socialButton{
+  border-radius: 50%;
+  margin-left: 8px;
+}
+.fbk{
+  background-color: #4267b2;
+}
+.twt{
+  background-color: #38A1F3;
+}
+.glg{
+  background-color: #c33219;
+}
+.creadores{
+  margin-bottom: 12px;
+}
+.view{
+  max-height: 250px !important;
+  min-height: 250px !important;
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover;
+}
+.user1{
+  background-image: url('../img/broncano.jpg');
+}
+.user2{
+  background-image: url('../img/queque.jpg');
+}
+.user3{
+  background-image: url('../img/ignatius.jpg');
+}
+.seccion1{
+  min-height: 100vh !important;
+  background-color:  #212121;
+}
+.seccion2{
+  min-height: 100vh !important;
+  background-color:  #212121;
+}
+.seccion3{
+  min-height: 100vh !important;
+  background-color: #212121;
+}
+#particles-js{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 0;
+  background: rgba(0,60,80,.8);
+}
+
+/*--Back to top Button--*/
+
+.cd-top {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  position: fixed;
+  bottom: 40px;
+  right: 10px;
+  border-radius: 50%;
+  /* image replacement properties */
+  white-space: nowrap;
+  background: rgba(26, 52, 96, 1);
+  visibility: hidden;
+  opacity: 0;
+  text-align: center;
+  z-index: 2000;
+}
+
+.cd-top > i{
+  position:relative;
+  top: calc(50% - 10px);
+}
+
+.cd-top.cd-top--show,
+.cd-top.cd-top--fade-out,
+.cd-top:hover {
+  -webkit-transition: opacity .3s 0s, visibility 0s 0s, background-color .3s 0s;
+  transition: opacity .3s 0s, visibility 0s 0s, background-color .3s 0s;
+}
+
+.cd-top.cd-top--show {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 0.7;
+}
+
+.cd-top.cd-top--fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+
+.cd-top:hover {
+  background-color: #4285f4;
+  opacity: 1;
+}
+
+@media only screen and (min-width: 768px) {
+  .cd-top {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .cd-top {
+    height: 60px;
+    width: 60px;
+    right: 30px;
+    bottom: 30px;
+  }
+}
+
+footer{
+  background-color: #0d47a1 !important;
+}
+
+.logoStyle{
+  font-family: monserrat;
+  letter-spacing: 10px;
+  font-weight: -100px;
+}

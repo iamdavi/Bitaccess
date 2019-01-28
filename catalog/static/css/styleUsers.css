@@ -1,0 +1,149 @@
+main{
+	padding: 16px;
+	padding-top: 32px;
+	color: white;
+}
+.filaAula{
+	min-height: 50px;
+	margin-bottom: 16px;
+}
+.deshabilitado{
+  pointer-events: none;
+  opacity: 0.4;
+}
+.numAula{
+	padding: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	min-height: 30px !important;
+	background-color: #0d47a1;
+}
+.botonIr{
+	padding: .4rem .7rem;
+	background-color: #00C851;
+}
+.breadcrumb{
+	background-color: rgba(0,0,0,0) !important;
+}
+div.navbar{
+	background-color: #0d47a1;
+}
+.seccion{
+	margin-bottom: 40px;
+	border-radius: 2px;
+}
+.envioMando{
+  border-radius: 2px;
+  padding: 8px;
+}
+.iconSection{
+	padding: 8px;
+	padding-right: 16px !important;
+	padding-left: 8px;
+	position: relative;
+	top: -25px;
+	left: 10px;
+	border-radius: 2px;
+}
+
+/*-- Switch selector --*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 14px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider apagado */
+.slider0 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider0:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 0px;
+  bottom: -6px;
+  background-color: grey;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider0 {
+  background-color: #33b5e5;
+}
+
+input:checked + .slider0:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
+  transform: translateX(14px);
+  background-color: #4285F4;
+}
+/* Slider encendido */
+.slider1 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #33b5e5;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider1:before {
+  position: absolute;
+  content: "";
+  height: 26px; 
+  width: 26px;
+  right: 0px;
+  bottom: -6px;
+  background-color: #4285F4;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider1 {
+  background-color: #ccc;
+}
+
+input:checked + .slider1:before {
+  -webkit-transform: translateX(-14px);
+  -ms-transform: translateX(-14px);
+  transform: translateX(-14px);
+  background-color: grey;
+}
+
+/* Rounded sliders */
+.slider0.round {
+  border-radius: 34px;
+}
+.slider0.round:before {
+  border-radius: 50%;
+}
+.slider1.round {
+  border-radius: 34px;
+}
+.slider1.round:before {
+  border-radius: 50%;
+}
+.tituloEstadoAula{
+	  position: relative !important;
+	  top: -25px;
+	  left: 10px;
+}

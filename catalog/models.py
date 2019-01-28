@@ -10,7 +10,8 @@ class Zona(models.Model):
     """
     Modelo que representa una Zona
     """
-    num_aula=models.IntegerField(
+    num_zona = models.IntegerField(
+        unique=True,
         null=True,
         blank=True,
         help_text="Numero de aula (identificador)."
@@ -24,15 +25,19 @@ class Zona(models.Model):
         max_length=25,
         help_text="Introduce el modelo del arduino (p. ej. Uno, Mega, etc.)"
     )
-    tipo =models.CharField(
+    tipo = models.CharField(
         max_length=25,
-        blank = True,
+        blank=True,
         null=True,
-        help_text = "Tipo de aula (p. ej. Clase, C.P.D...)"
+        help_text="Tipo de aula (p. ej. Clase, C.P.D...)"
     )
     descripcion = models.TextField(
-        max_length = 1000,
+        max_length=1000,
         help_text="Introduce una descripción de la zona."
+    )
+    dentro = models.BooleanField(
+        default=False,
+        help_text="La zona se encuentra ocupada o no."
     )
 
     def __str__(self):
@@ -45,29 +50,40 @@ class Zona(models.Model):
         """
         Devuelve el URL a una instancia particular de Zona
         """
-        return reverse('aula-detail', args=[str(self.id)])
+        return reverse('zona-detail', args=[str(self.num_zona)])
 
     class Meta:
-        ordering = ["num_aula","ip"]
+        """
+        Clase para ordenar las zonas segun el número y la ip
+        """
+        ordering = ["num_zona", "ip"]
+        unique_together = (
+            "ip", "num_zona"
+        )
 
 class Puerto(models.Model):
     """
     Modelo que representa un puerto
     """
-    ip=models.ForeignKey(
+    ip = models.ForeignKey(
         Zona,
-        on_delete = models.CASCADE,
+        on_delete=models.CASCADE,
         help_text="Ip de la zona"
     )
-    num_puerto=models.IntegerField(
+    num_puerto = models.IntegerField(
         help_text="Número de puerto del arduino"
     )
-    descripcion=models.CharField(
-        max_length= 35,
+    descripcion = models.CharField(
+        max_length=35,
         help_text="Acción que realiza dicho puerto"
     )
 
     class Meta:
+        """
+        Clase para ordenar los puertos por ip y número de puerto.
+        Clase para que 'ip' u 'num_puerto' sean únicos:
+        -- Clave primaria formada por dos campos --
+        """
         ordering = ["ip", "num_puerto"]
         unique_together = (
             "ip", "num_puerto"
@@ -97,13 +113,17 @@ class Empleado(models.Model):
     )
 
     class Meta:
+        """
+        Clase para ordenar los empleados por Nombre y rfid
+        """
         ordering = ["user", "rfid"]
-    
+
+
     def __str__(self):
         """
         Método que representa a un usuario
         """
-        return self.user
+        return str(self.user)
 
 class RegistroAula(models.Model):
     """
@@ -121,15 +141,19 @@ class RegistroAula(models.Model):
         auto_now_add=True
     )
     f_salida = models.DateTimeField(
-        auto_now = True
+        auto_now=True
     )
     dentro = models.BooleanField(
-        null = False,
-        default = False
+        null=False,
+        default=False
     )
 
     class Meta:
-        ordering=["rfid","ip"]
+        """
+        Clase para ordenar los registros por usuario e ip
+        """
+        ordering = ["rfid", "ip"]
+
 
     def __str__(self):
         """
@@ -141,7 +165,7 @@ class PermisosAula(models.Model):
     """
     Modelo para gestionar al acceso a las zonas
     """
-    grupo=models.ForeignKey(
+    grupo = models.ForeignKey(
         Group,
         on_delete=models.DO_NOTHING,
         help_text="Grupo al que quieres dar permiso."
@@ -162,7 +186,7 @@ class PermisosPuerto(models.Model):
     """
     Modelos para gestionar los permisos a los puertos
     """
-    grupo=models.ForeignKey(
+    grupo = models.ForeignKey(
         Group,
         on_delete=models.DO_NOTHING,
         help_text="Grupo al que quieres dar permiso."

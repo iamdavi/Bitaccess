@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if zona_list %}
+{% for zona in zona_list %}
+
+<div class="row fuera filaAula primary-color align-items-center justify-content-md-center z-depth-2">
+    <div class="col-1"><span class="numAula z-depth-2">{{ zona.num_zona }}</span></div>
+    <div class="col-8 text-center text-truncate">{{ zona.descripcion }}</div>
+
+    <div class='col-2 float-right'>
+        <a href="#!" class='btn btn-{% if aula.dentro %}danger{%else %}success{% endif %} botonIr'><i class='fa fa-caret-right' aria-hidden='true'></i></a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<h1 class="black-text">No tienes aulas asignadas.</h1>
+{% endif %}
+
+{% block pagination %}
+
+{% if is_paginated %}
+<div class="pagination black-text">
+    <span class="page-current">
+        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+    </span>
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><< Anterior</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Siguiente >></a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% endblock %}
