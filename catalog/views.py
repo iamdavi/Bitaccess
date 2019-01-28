@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Zona, Puerto
+from .models import Zona, Puerto, Empleado, RegistroAula
 from django.views.generic.detail import DetailView
 
 
@@ -12,6 +12,18 @@ class ZonaListView(generic.ListView):
     """
     model = Zona
     paginate_by = 10
+
+    def get_queryset(self):
+        empleado = Empleado.objects.get(user=self.request.user)
+
+        zonas = Zona.objects.all()
+        for zona in zonas:
+            if zona.dentro:
+                resgistros = RegistroAula.objects.filter(rfid=empleado.rfid)
+                for resgistro in resgistros:
+                    if registro.dentro:
+                        zona.usuario_dentro = True
+        return zonas
 
 class ZonaDetailView(generic.DetailView):
     """

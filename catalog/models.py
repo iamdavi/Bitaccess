@@ -40,6 +40,8 @@ class Zona(models.Model):
         help_text="La zona se encuentra ocupada o no."
     )
 
+    usuario_dentro = False
+
     def __str__(self):
         """
         String que representa al objeto Zona
