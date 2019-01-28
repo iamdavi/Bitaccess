@@ -35,7 +35,7 @@
         </div>
         <div class="col-sm-12 tituloEstadoAula">
             <p class="black-text">
-                {{ aula.descripcion }}
+                {{ zona.descripcion }}
             </p>
         </div>
 
@@ -68,13 +68,13 @@
                 </thead>
                 <tbody>
                     {% csrf_token %}
-                        {% for puerto in aula.puerto_set.all %}
+                        {% for puerto in zona.puerto_set.all %}
                         <tr>
                             <th scope="row" >{{ puerto.num_puerto }}</th>
                             <td>{{ puerto.descripcion }}</td>
                             <td>
                                 <label class='switch'>
-                                    <input type='checkbox' id="{{parametro}}-{{puerto.num_puerto}}" value="{% if puerto.encendido %}1{% else %}0{% endif %}" urlval="{% url 'cambia' %}" name='check_list[]' class='asd'>
+                                    <input type='checkbox' id="{{zona.ip}}-{{puerto.num_puerto}}" value="{% if puerto.encendido %}1{% else %}0{% endif %}" urlval="{% url 'cambia' %}" name='check_list[]' class='asd'>
                                     <span class='{% if puerto.encendido  %} slider1 {% else %} slider0 {%endif %} round parajs'></span>
                                     <!-- slider0 es el estilo que indica que el puerto está apagado -->
                                     <!-- slider1 es el estilo que indica que el puerto está encendido -->
@@ -92,49 +92,53 @@
 {% endblock %}
 
 {% block breadcrumn %}
-<li class="breadcrumb-item active">Aula Nº {{parametro}}</li>
+<li class="breadcrumb-item active">Aula Nº {{zona.num_zona}}</li>
 {% endblock %}
 
-<!-- {% block jsscript %}
-     <script type="text/javascript">
-     $(document).ready(function(){
+{% block jsscript %}
+<script type="text/javascript">
+ $(document).ready(function(){
 
      $('.asd').click(function(){
-     if ($(this).val()== '1'){
-     $(this).val('0');
-     } else if ($(this).val()=='0'){
-     $(this).val('1');
-     }
+         if ($(this).val()== '1'){
+             $(this).val('0');
+         } else if ($(this).val()=='0'){
+             $(this).val('1');
+         }
      });
 
      $('.asd').click(function(){
 
-     var aulaId = $(this).attr('id');
-     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-     var aulaId = aulaId.split('-')[0]; /*-- Identificador del aula --*/
-     var numPuerto = $(this).attr('id').split('-')[1];/*-- Numero del puerto --*/
-     var urlval = $(this).attr('urlval');/*-- url --*/
-     var estado = $(this).val();/*-- Valor al que va acambier el puerto --*/
+         var aulaId = $(this).attr('id');
+         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+         var aulaId = aulaId.split('-')[0]; /*-- Identificador del aula --*/
+         console.log(aulaId)
+         var numPuerto = $(this).attr('id').split('-')[1];/*-- Numero del puerto --*/
+         console.log(numPuerto)
+         var urlval = $(this).attr('urlval');/*-- url --*/
+         console.log(urlval)
+         var estado = $(this).val();/*-- Valor al que va acambier el puerto --*/
+         console.log(estado)
 
-     $.ajax({
-     url: urlval,
-     type: 'POST',
-     dataType: 'json',
-     data:{
-     'aulaId': aulaId,
-     'numPuerto': numPuerto,
-     'estado': estado
-     },
-     headers: {
-     'X-Requested-With': 'XMLHttpRequest',
-     "X-CSRFToken": csrftoken,
-     },
-     success: function (data) {
-     alert("Se ha cambiado el estado del puerto.");
-     }
+         $.ajax({
+             url: urlval,
+             type: 'POST',
+             dataType: 'json',
+             data:{
+                 'aulaId': aulaId,
+                 'numPuerto': numPuerto,
+                 'estado': estado
+             },
+             headers: {
+                 'X-Requested-With': 'XMLHttpRequest',
+                 "X-CSRFToken": csrftoken,
+             },
+             success: function (data) {
+                 alert("Se ha cambiado el estado del puerto.");
+             }
+         });
      });
-     });
-     });
-     </script>
--->
+ });
+</script>
+
 {% endblock %}

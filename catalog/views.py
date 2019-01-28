@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
-from .models import Zona
+from .models import Zona, Puerto
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 
@@ -16,3 +17,12 @@ class ZonaDetailView(generic.DetailView):
     Clase para mostrar la informazión de una zona (puertos,descripcion...)
     """
     model = Zona
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            id_zona = request.POST['aulaId']
+            num_puerto = request.POST['numPuerto']
+            estado = request.POST['estado']
+            puerto = Puerto.objects.get(ip=id_zona, num_puerto=num_puerto)
+            puerto.encendido = int(estado)
+            puerto.save()

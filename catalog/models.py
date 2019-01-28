@@ -44,13 +44,13 @@ class Zona(models.Model):
         """
         String que representa al objeto Zona
         """
-        return "%s (%s)" % (self.ip, self.tipo)
+        return "%s (%s)" % (self.num_zona, self.ip)
 
-    def get_absolute_url(self):
-        """
-        Devuelve el URL a una instancia particular de Zona
-        """
-        return reverse('zona-detail', args=[str(self.num_zona)])
+    # def get_absolute_url(self):
+    #     """
+    #     Devuelve el URL a una instancia particular de Zona
+    #     """
+    #     return reverse('zona-detail', args=[str(self.num_zona)])
 
     class Meta:
         """
