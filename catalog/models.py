@@ -46,12 +46,6 @@ class Zona(models.Model):
         """
         return "%s (%s)" % (self.num_zona, self.ip)
 
-    # def get_absolute_url(self):
-    #     """
-    #     Devuelve el URL a una instancia particular de Zona
-    #     """
-    #     return reverse('zona-detail', args=[str(self.num_zona)])
-
     class Meta:
         """
         Clase para ordenar las zonas segun el número y la ip
@@ -76,6 +70,9 @@ class Puerto(models.Model):
     descripcion = models.CharField(
         max_length=35,
         help_text="Acción que realiza dicho puerto"
+    )
+    encendido = models.BooleanField(
+        default=False
     )
 
     class Meta:

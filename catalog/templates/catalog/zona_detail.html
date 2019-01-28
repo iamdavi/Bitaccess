@@ -112,13 +112,9 @@
          var aulaId = $(this).attr('id');
          var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
          var aulaId = aulaId.split('-')[0]; /*-- Identificador del aula --*/
-         console.log(aulaId)
          var numPuerto = $(this).attr('id').split('-')[1];/*-- Numero del puerto --*/
-         console.log(numPuerto)
          var urlval = $(this).attr('urlval');/*-- url --*/
-         console.log(urlval)
          var estado = $(this).val();/*-- Valor al que va acambier el puerto --*/
-         console.log(estado)
 
          $.ajax({
              url: urlval,
