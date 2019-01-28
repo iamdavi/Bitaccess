@@ -4,16 +4,15 @@ from django.contrib import admin
 
 from .models import Zona,Puerto,Empleado, PermisosAula, PermisosPuerto
 
-# @admin.register(Puerto)
-# class PuertoInline(admin.TabularInline):
-#     model=Puerto
-#     extra = 0
+class PuertoInline(admin.TabularInline):
+    model=Puerto
+    extra = 0
 
 @admin.register(Zona)
 class ZonaAdmin(admin.ModelAdmin):
     list_display=("num_aula","ip","modelo","tipo","descripcion")
     fields=['num_aula',('ip','modelo'),('tipo','descripcion')]
-    # inlines=[PuertoInline]
+    inlines=[PuertoInline]
 
 @admin.register(Puerto)
 class PuertoAdmin(admin.ModelAdmin):
