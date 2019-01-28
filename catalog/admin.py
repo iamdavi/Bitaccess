@@ -10,7 +10,7 @@ class PuertoInline(admin.TabularInline):
 @admin.register(Zona)
 class ZonaAdmin(admin.ModelAdmin):
     list_display = ("num_zona", "descripcion", "ip", "modelo", "tipo")
-    fields = ['num_zona', ('ip', 'modelo'), ('tipo', 'descripcion')]
+    fields = ['num_zona', ('ip', 'modelo'), ('tipo', 'descripcion'), 'dentro']
     inlines = [PuertoInline]
 
 @admin.register(Puerto)
