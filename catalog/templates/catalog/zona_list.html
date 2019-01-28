@@ -10,7 +10,7 @@
     <div class="col-8 text-center text-truncate">{{ zona.descripcion }}</div>
 
     <div class='col-2 float-right'>
-        <a href="{% url 'zona-detail' zona.ip %}" class='btn btn-{% if zona.dentro %}danger{%else %}success{% endif %} botonIr'><i class='fa fa-caret-right' aria-hidden='true'></i></a>
+        <a href="{% url 'zona-detail' zona.num_zona %}" class='btn btn-{% if aula.dentro %}danger{%else %}success{% endif %} botonIr'><i class='fa fa-caret-right' aria-hidden='true'></i></a>
     </div>
 </div>
 {% endfor %}
