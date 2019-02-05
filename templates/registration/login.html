@@ -1,0 +1,58 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+<link href="{% static 'css/styleLogin.css' %}" rel="stylesheet">
+
+{% block content %}
+
+{% if form.errors %}
+<h1 class="black-text">No hemos encontrado tu usuario y contraseña. <br/> Por favor vuelve a intentarlo.</h1>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<h1 class="black-text">Tu cuenta no tiene acceso, inicia sesión con otra cuenta que tenga permisos.</h1>
+{% else %}
+<p></p>
+{% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+
+    <div class="col-sm-12 mb-4">
+            <!--Form-->
+            <div class="card">
+              <div class="card-body z-depth-2">
+                <!--Header-->
+                <div class="text-center">
+                  <h3 class="dark-grey-text">
+                    <strong>Inicia sesión:</strong>
+                  </h3>
+                  <hr>
+                </div>
+                <!--Body-->
+                <form method="post" action="">
+                  <div class="md-form">
+                      <i class="fa fa-user prefix grey-text"></i>
+                      {{ form.username.label_tag }}
+                      {{ form.username }}
+                  </div>
+                  <div class="md-form">
+                      <i class="fa fa-lock prefix grey-text" aria-hidden="true"></i>
+                      {{ form.password.label_tag }}
+                      {{ form.password }}
+                  </div>
+                  <!--Textarea with icon prefix-->
+                  <div class="text-center mb-3">
+                      <input type="submit" class="btn btn-primary mb-3" value="Entrar" />
+                      <input type="hidden" name="next" value="{{ next }}" />
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!--/.Form-->
+          </div>
+</form>
+
+{% endblock %}
