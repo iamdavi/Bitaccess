@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Zona, Puerto, Empleado, RegistroAula
+from .models import Zona, Puerto, Empleado, RegistroAula, ConjuntoZona
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from socket import *# Usado para enviar orden al arduino
+# Usado para enviar orden al arduino
+from socket import *
 import time
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
@@ -21,14 +22,15 @@ class ZonaListView(LoginRequiredMixin, generic.ListView):
         Método usado para saber el estado de la zona
         """
         empleado = Empleado.objects.get(user=self.request.user)
-        zonas = Zona.objects.all()
+        zonas = get_zonas_user(self.request.user)
 
         for zona in zonas:
             if zona.dentro:
                 resgistros = RegistroAula.objects.filter(rfid=empleado.rfid)
-                for resgistro in resgistros:
+                for registro in resgistros:
                     if registro.dentro:
                         zona.usuario_dentro = True
+                        print('hola')
         return zonas
 
 class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
@@ -57,7 +59,7 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
             puerto.save()
 
             address= ( id_zona, 5001) #define server IP and port
-            client_socket =socket(AF_INET, SOCK_DGRAM) #Set up the Socket
+            client_socket = socket(AF_INET, SOCK_DGRAM) #Set up the Socket
             client_socket.settimeout(1) #Only wait 1 second for a response
 
             if estado == '1':
@@ -65,9 +67,16 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
             else:
                 valor_arduino = num_puerto + "off"
 
-            while(1):
-                data = valor_arduino #Mensaje que se envía al arduino
-                client_socket.sendto( data.encode(), address) #Send the data request
-                break
+            client_socket.sendto(valor_arduino.encode(), address) #Send the data request
 
-            return HttpResponse('')
+            return JsonResponse({})
+
+    
+def get_zonas_user(user):
+    grupos = user.groups.all()
+    zonas = Zona.objects.none()
+    for grupo in grupos:
+        conjuntos_zona = ConjuntoZona.objects.filter(grupos_con_acceso=grupo)
+        for conjunto in conjuntos_zona:
+            zonas |= conjunto.zona.all()
+    return zonas

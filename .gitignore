@@ -241,3 +241,4 @@ flycheck_*.el
 .history
 
 # End of https://www.gitignore.io/api/emacs,python,django,visualstudiocode
+.vscode/settings.json
