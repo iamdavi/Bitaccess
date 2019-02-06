@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import Zona,Puerto,Empleado, RegistroAula, ConjuntoZona
+from .models import Zona,Puerto,Empleado, RegistroAula, ConjuntoZona, ConjuntoPuerto
 
 # Register your models here.
 
@@ -38,3 +38,8 @@ class RegistroAula(admin.ModelAdmin):
 class ConjuntoZona(admin.ModelAdmin):
     list_display=("conjunto_zona",)
     fields = ['conjunto_zona', ('zona', 'grupos_con_acceso')]
+
+@admin.register(ConjuntoPuerto)
+class ConjuntoZona(admin.ModelAdmin):
+    list_display=("conjunto_puerto",)
+    fields = ['conjunto_puerto', ('puerto', 'grupos_con_acceso')]

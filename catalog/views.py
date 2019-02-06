@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Zona, Puerto, Empleado, RegistroAula, ConjuntoZona
+from .models import Zona, Puerto, Empleado, RegistroAula, ConjuntoZona, ConjuntoPuerto
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Usado para enviar orden al arduino
@@ -30,7 +30,6 @@ class ZonaListView(LoginRequiredMixin, generic.ListView):
                 for registro in resgistros:
                     if registro.dentro:
                         zona.usuario_dentro = True
-                        print('hola')
         return zonas
 
 class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
@@ -38,6 +37,16 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
     Clase para mostrar la informazión de una zona (puertos,descripcion...)
     """
     model = Zona
+    paginate_by = 10
+
+    def get_queryset(self):
+        """
+        Método para listar puertos
+        """
+        empleado = Empleado.objects.get(user=self.request.user)
+        puertos = get_puertos_user(self.request.user)
+        return puertos
+
 
     def get_object(self, queryset=None):
         zona = get_object_or_404(Zona, num_zona=self.kwargs['numero'])
@@ -71,7 +80,6 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
 
             return JsonResponse({})
 
-    
 def get_zonas_user(user):
     grupos = user.groups.all()
     zonas = Zona.objects.none()
@@ -80,3 +88,12 @@ def get_zonas_user(user):
         for conjunto in conjuntos_zona:
             zonas |= conjunto.zona.all()
     return zonas
+
+def get_puertos_user(user):
+    grupos = user.groups.all()
+    puertos = Puerto.objects.none()
+    for grupo in grupos:
+        conjuntos_puerto = ConjuntoPuerto.objects.filter(grupos_con_acceso=grupo)
+        for conjunto in conjuntos_puerto:
+            puertos |= conjunto.puerto.all()
+    return puertos

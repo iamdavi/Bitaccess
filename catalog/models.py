@@ -120,7 +120,35 @@ class Puerto(models.Model):
         """
         Método que identifica a un puerto en concreto
         """
-        return "%s (%s)" % (self.ip, self.num_puerto)
+        return "%s (%s) [%s]" % (self.ip, self.num_puerto, self.descripcion)
+
+class ConjuntoPuerto(models.Model):
+    """
+    Modelo para representar zonas de las mismas características
+    """
+    puerto = models.ManyToManyField(
+        Puerto,
+        help_text="Elige los puertos que quieres agrupar"
+    )
+    conjunto_puerto = models.CharField(
+        max_length=20,
+        help_text="Nombre para agrupar los puertos (p. ej. Baños, Despachos...)"
+    )
+    grupos_con_acceso = models.ManyToManyField(
+        Group
+    )
+
+    def __str__(self):
+        """
+        String que representa el conjunto de zonas
+        """
+        return self.conjunto_puerto
+
+    class Meta:
+        """
+        Clase para ordenar conjuntos
+        """
+        ordering = ["conjunto_puerto"]
 
 class Empleado(models.Model):
     """
