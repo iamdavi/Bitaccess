@@ -9,10 +9,10 @@ class PuertoInline(admin.TabularInline):
 
 @admin.register(Zona)
 class ZonaAdmin(admin.ModelAdmin):
-    list_display = ("num_zona", "descripcion", "ip", "modelo", "tipo")
+    list_display = ("id_zona", "descripcion")
     fieldsets = (
         ('Zona', {
-            'fields': ['num_zona', ('tipo', 'descripcion'),'dentro']
+            'fields': ['id_zona','descripcion']
         }),
         ('Dispositivo', {
             'fields': ('ip', 'modelo')
@@ -22,17 +22,17 @@ class ZonaAdmin(admin.ModelAdmin):
 
 @admin.register(Puerto)
 class PuertoAdmin(admin.ModelAdmin):
-    list_display = ("ip", "num_puerto", "descripcion")
+    list_display = ("zona", "num_puerto", "descripcion")
 
 @admin.register(Empleado)
 class EmpleadoAdmin(admin.ModelAdmin):
-    list_display = ("user", "rfid","dentro")
-    fields = ['user', 'rfid', 'dentro']
+    list_display = ("user", "rfid")
+    fields = ['user', 'rfid', 'dentro', 'grupo']
 
 @admin.register(RegistroAula)
 class RegistroAula(admin.ModelAdmin):
-    list_display=("rfid", "ip",  "f_salida", "dentro")
-    fields = ['rfid', 'ip', 'f_entrada', 'f_salida', 'dentro']
+    list_display=("rfid", "ip",  "f_entrada", "f_salida")
+    fields = ['rfid', 'ip', 'f_entrada', 'f_salida']
 
 @admin.register(ConjuntoZona)
 class ConjuntoZona(admin.ModelAdmin):
@@ -42,4 +42,4 @@ class ConjuntoZona(admin.ModelAdmin):
 @admin.register(ConjuntoPuerto)
 class ConjuntoZona(admin.ModelAdmin):
     list_display=("conjunto_puerto",)
-    fields = ['conjunto_puerto', ('puerto', 'grupos_con_acceso')]
+    fields = ['conjunto_puerto', ('puertos', 'grupos_con_acceso')]

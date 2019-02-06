@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row justify-content-between">
-    <div class="col-sm-12 col-md-5 z-depth-1 alert-{% if zona.usuario_dentro %}info{% elif zona.dentro %}danger{% else %}success{% endif %} seccion">
+    <div class="col-sm-12 col-md-5 z-depth-1 alert-{% if zona.usuario_dentro == request.user %}info{% elif zona.dentro %}danger{% else %}success{% endif %} seccion">
 
     <div class="col-3 col-md-2 iconSection z-depth-1 info-color-dark text-center">
         <i class="fa fa-book fa-2x white-text" aria-hidden="true"></i>
@@ -70,7 +70,7 @@
                 </thead>
                 <tbody>
                     {% csrf_token %}
-                        {% for puerto in zona.puerto_set.all %}
+                        {% for puerto in puertos %}
                         <tr>
                             <th scope="row" >{{ puerto.num_puerto }}</th>
                             <td>{{ puerto.descripcion }}</td>
@@ -94,7 +94,7 @@
 {% endblock %}
 
 {% block breadcrumn %}
-<li class="breadcrumb-item active">Aula Nº {{zona.num_zona}}</li>
+<li class="breadcrumb-item active">{{zona.id_zona}}</li>
 {% endblock %}
 
 {% block jsscript %}

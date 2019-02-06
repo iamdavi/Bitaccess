@@ -5,13 +5,12 @@
 {% if zona_list %}
 {% for zona in zona_list %}
 
-<div class="row fuera filaAula primary-color align-items-center
-justify-content-md-center z-depth-1 {% if zona.dentro and not zona.usuario_dentro %} deshabilitado {% endif %}">
-    <div class="col-1"><span class="numAula z-depth-1">{{ zona.num_zona }}</span></div>
-    <div class="col-8 text-center text-truncate">{{ zona.descripcion }}</div>
+<div class="row fuera filaAula primary-color align-items-center justify-content-md-center z-depth-1 {% if zona.usuario_dentro and zona.usuario_dentro != request.user %} deshabilitado {% endif %}">
+    <div class="col-3"><span class="numAula z-depth-1">{{ zona.id_zona }}</span></div>
+    <div class="col-6 text-center text-truncate">{{ zona.descripcion }}</div>
 
     <div class='col-2 float-right'>
-        <a href="{% url 'zona-detail' zona.num_zona %}" class='btn btn-{% if zona.usuario_dentro %}info{%elif zona.dentro %}danger{% else %}success{% endif %} botonIr'><i class='fa fa-caret-right' aria-hidden='true'></i></a><br/>
+        <a href="{% url 'zona-detail' zona.id %}" class='btn btn-{% if zona.usuario_dentro == request.user %}info{% elif zona.usuario_dentro %}danger{% else %}success{% endif %} botonIr'><i class='fa fa-caret-right' aria-hidden='true'></i></a><br/>
     </div>
 </div>
 {% endfor %}

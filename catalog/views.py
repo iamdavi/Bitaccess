@@ -24,12 +24,6 @@ class ZonaListView(LoginRequiredMixin, generic.ListView):
         empleado = Empleado.objects.get(user=self.request.user)
         zonas = get_zonas_user(self.request.user)
 
-        for zona in zonas:
-            if zona.dentro:
-                resgistros = RegistroAula.objects.filter(rfid=empleado.rfid)
-                for registro in resgistros:
-                    if registro.dentro:
-                        zona.usuario_dentro = True
         return zonas
 
 class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
@@ -37,21 +31,16 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
     Clase para mostrar la informazión de una zona (puertos,descripcion...)
     """
     model = Zona
-    paginate_by = 10
 
-    def get_queryset(self):
-        """
-        Método para listar puertos
-        """
-        empleado = Empleado.objects.get(user=self.request.user)
-        puertos = get_puertos_user(self.request.user)
-        return puertos
-
-
-    def get_object(self, queryset=None):
-        zona = get_object_or_404(Zona, num_zona=self.kwargs['numero'])
-        self.kwargs['pk'] = zona.ip
-        return super(ZonaDetailView, self).get_object(queryset=queryset)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        grupos = Empleado.objects.get(user=self.request.user).grupo.all() 
+        conjuntos = ConjuntoPuerto.objects.filter(grupos_con_acceso__in=grupos)
+        puertos = Puerto.objects.none()
+        for conjunto in conjuntos:
+            puertos |= conjunto.puertos.filter(zona=self.object)
+        context['puertos'] = puertos
+        return context
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
@@ -59,11 +48,6 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
             num_puerto = request.POST['numPuerto']
             estado = request.POST['estado']
             puerto = Puerto.objects.get(ip=id_zona, num_puerto=num_puerto)
-            cambio_realizado = {
-                'ip_dispositivo': id_zona,
-                'numero_puerto': num_puerto,
-                'nuevo_estado': estado
-            }
             puerto.encendido = int(estado)
             puerto.save()
 
@@ -81,19 +65,10 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
             return JsonResponse({})
 
 def get_zonas_user(user):
-    grupos = user.groups.all()
+    grupos = Empleado.objects.get(user=user).grupo.all()
     zonas = Zona.objects.none()
     for grupo in grupos:
         conjuntos_zona = ConjuntoZona.objects.filter(grupos_con_acceso=grupo)
         for conjunto in conjuntos_zona:
             zonas |= conjunto.zona.all()
     return zonas
-
-def get_puertos_user(user):
-    grupos = user.groups.all()
-    puertos = Puerto.objects.none()
-    for grupo in grupos:
-        conjuntos_puerto = ConjuntoPuerto.objects.filter(grupos_con_acceso=grupo)
-        for conjunto in conjuntos_puerto:
-            puertos |= conjunto.puerto.all()
-    return puertos

@@ -10,14 +10,7 @@ class Zona(models.Model):
     """
     Modelo que representa una Zona
     """
-    num_zona = models.IntegerField(
-        unique=True,
-        null=True,
-        blank=True,
-        help_text="Numero de aula (identificador)."
-    )
     ip = models.CharField(
-        primary_key=True,
         max_length=25,
         help_text="Ip del dispositivo asociado a esta aula"
     )
@@ -25,37 +18,34 @@ class Zona(models.Model):
         max_length=25,
         help_text="Introduce el modelo del arduino (p. ej. Uno, Mega, etc.)"
     )
-    tipo = models.CharField(
+    id_zona = models.CharField(
         max_length=25,
-        blank=True,
-        null=True,
-        help_text="Tipo de aula (p. ej. Clase, C.P.D...)"
+        help_text="Identificador de zona (p. ej. Clase 2, Baño 4...)"
     )
     descripcion = models.TextField(
         max_length=1000,
+        blank=True,
+        null=True,
         help_text="Introduce una descripción de la zona."
     )
-    dentro = models.BooleanField(
-        default=False,
-        help_text="La zona se encuentra ocupada o no."
-    )
 
-    usuario_dentro = False
+    @property
+    def usuario_dentro(self):
+        """
+        Usuario que está dentro de la zona, si no hay ninguno devuele None
+        """
+        registros_activos = RegistroAula.objects.filter(f_salida=None,
+                                                         ip=self.ip)
+        if registros_activos:
+            return registros_activos[0].rfid.user
+        return None
 
     def __str__(self):
         """
         String que representa al objeto Zona
         """
-        return "%s %s" % (self.num_zona, self.tipo)
+        return self.id_zona
 
-    class Meta:
-        """
-        Clase para ordenar las zonas segun el número y la ip
-        """
-        ordering = ["num_zona", "ip"]
-        unique_together = (
-            "ip", "num_zona"
-        )
 
 class ConjuntoZona(models.Model):
     """
@@ -89,10 +79,10 @@ class Puerto(models.Model):
     """
     Modelo que representa un puerto
     """
-    ip = models.ForeignKey(
+    zona = models.ForeignKey(
         Zona,
         on_delete=models.CASCADE,
-        help_text="Ip de la zona"
+        help_text="Zona donde se encuentra el dispositivo."
     )
     num_puerto = models.IntegerField(
         help_text="Número de puerto del arduino"
@@ -111,28 +101,28 @@ class Puerto(models.Model):
         Clase para que 'ip' u 'num_puerto' sean únicos:
         -- Clave primaria formada por dos campos --
         """
-        ordering = ["ip", "num_puerto"]
+        ordering = ["zona", "num_puerto"]
         unique_together = (
-            "ip", "num_puerto"
+            "zona", "num_puerto"
         )
 
     def __str__(self):
         """
         Método que identifica a un puerto en concreto
         """
-        return "%s (%s) [%s]" % (self.ip, self.num_puerto, self.descripcion)
+        return f"{self.zona} {self.descripcion}"
 
 class ConjuntoPuerto(models.Model):
     """
     Modelo para representar zonas de las mismas características
     """
-    puerto = models.ManyToManyField(
+    puertos = models.ManyToManyField(
         Puerto,
         help_text="Elige los puertos que quieres agrupar"
     )
     conjunto_puerto = models.CharField(
         max_length=20,
-        help_text="Nombre para agrupar los puertos (p. ej. Baños, Despachos...)"
+        help_text="Nombre para agrupar los puertos (p. ej. Luces, Puertas...)"
     )
     grupos_con_acceso = models.ManyToManyField(
         Group
@@ -163,6 +153,9 @@ class Empleado(models.Model):
         max_length=30,
         help_text="Introduce el RFID del empleado"
     )
+    grupo = models.ManyToManyField(
+        Group
+    )
     dentro = models.BooleanField(
         default=False
     )
@@ -192,15 +185,10 @@ class RegistroAula(models.Model):
     ip = models.CharField(
         max_length=30
     )
-    f_entrada = models.DateTimeField(
-    )
+    f_entrada = models.DateTimeField()
     f_salida = models.DateTimeField(
         null=True,
         blank=True
-    )
-    dentro = models.BooleanField(
-        null=False,
-        default=False
     )
 
     class Meta:
@@ -209,9 +197,15 @@ class RegistroAula(models.Model):
         """
         ordering = ["rfid", "ip"]
 
-
     def __str__(self):
         """
         Cadena para devolver RFID e IP
         """
         return '%s (%s)' % (self.rfid, self.ip)
+
+    @property
+    def zona(self):
+        """
+        Zona asociada a la ip del registro
+        """
+        return Zona.objects.get(ip=self.ip)
