@@ -47,7 +47,7 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
             id_zona = request.POST['aulaId']
             num_puerto = request.POST['numPuerto']
             estado = request.POST['estado']
-            puerto = Puerto.objects.get(ip=id_zona, num_puerto=num_puerto)
+            puerto = Puerto.objects.get(zona__ip=id_zona, num_puerto=num_puerto)
             puerto.encendido = int(estado)
             puerto.save()
 

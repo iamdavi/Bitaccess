@@ -17,6 +17,16 @@ main{
 	padding-right: 6px;
 	min-height: 30px !important;
 	background-color: #0d47a1;
+  /* position: relative; */
+  /* top: -20px; */
+}
+.descripcionEstado{
+    height: inherit;
+    display: table;
+}
+.descripcionEstadoText{
+    display: table-cell;
+    vertical-align: middle;
 }
 .botonIr{
 	padding: .4rem .7rem;
