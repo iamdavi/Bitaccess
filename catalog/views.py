@@ -23,7 +23,7 @@ class ZonaListView(LoginRequiredMixin, generic.ListView):
         """
         empleado = Empleado.objects.get(user=self.request.user)
         zonas = get_zonas_user(self.request.user)
-
+        zonas = zonas.distinct() # Eliminar los objetos duplicado
         return zonas
 
 class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
@@ -39,6 +39,7 @@ class ZonaDetailView(LoginRequiredMixin, generic.DetailView):
         puertos = Puerto.objects.none()
         for conjunto in conjuntos:
             puertos |= conjunto.puertos.filter(zona=self.object)
+        puertos = puertos.distinct()
         context['puertos'] = puertos
         return context
 
