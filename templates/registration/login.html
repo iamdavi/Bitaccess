@@ -6,12 +6,12 @@
 {% block content %}
 
 {% if form.errors %}
-<h1 class="black-text">No hemos encontrado tu usuario y contraseña. <br/> Por favor vuelve a intentarlo.</h1>
+<h2 class="black-text">No hemos encontrado tu usuario y contraseña. <br/> Por favor vuelve a intentarlo.</h2>
 {% endif %}
 
 {% if next %}
 {% if user.is_authenticated %}
-<h1 class="black-text">Tu cuenta no tiene acceso, inicia sesión con otra cuenta que tenga permisos.</h1>
+<h2 class="black-text">Tu cuenta no tiene acceso, inicia sesión con otra cuenta que tenga permisos.</h2>
 {% else %}
 <p></p>
 {% endif %}
@@ -44,9 +44,14 @@
                       {{ form.password }}
                   </div>
                   <!--Textarea with icon prefix-->
-                  <div class="text-center mb-3">
-                      <input type="submit" class="btn btn-primary mb-3" value="Entrar" />
-                      <input type="hidden" name="next" value="{{ next }}" />
+                  <div class="row justify-content-end">
+                      <div class="col-4 text-center mb-3">
+                          <input type="submit" class="btn btn-primary mb-3" value="Entrar" />
+                          <input type="hidden" name="next" value="{{ next }}" />
+                      </div>
+                      <div class="col-4">
+                          <a class="btn btn-outline-primary waves-effect float-right btn-sm" role="button" href="{% url 'admin:index' %}">admin</a>
+                      </div>
                   </div>
                 </form>
               </div>
