@@ -1,8 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h2 class="black-text">Has cerrado sesión</h2>
+        <h4 class="black-text">Has cerrado sesión correctamente</h4>
+        <a href="{% url 'login'%}" class="btn btn-outline-primary waves-effecs" role="button">volvel a iniciar sesión</a>
 
-<a href="{% url 'login'%}" class="btn btn-outline-primary waves-effecs" role="button">volvel a iniciar sesión</a>
 
 {% endblock %}

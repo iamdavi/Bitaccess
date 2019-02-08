@@ -53,13 +53,16 @@
     <div class="col-9 col-md-9 text-center">
         <h3 class="black-text mt-3">Dispositivo</h3>
     </div>
-
+    {% if puertos %}
     <div class="col-sm-12">
+
         <h3 class="black-text">Lista de puertos:</h3>
     </div>
+    {% endif %}
 
     <div class="col-sm-12">
         <div class="table-responsive">
+            {% if puertos %}
             <table class="table black-text">
                 <thead>
                     <tr>
@@ -85,8 +88,19 @@
                         </tr>
                         {% endfor %}
                 </tbody>
-
             </table>
+            {% else %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">
+                    No tienes acceso a ningún puerto en esta zona.
+                </h4>
+                <hr/>
+                Ponte en contacto con tu administrador para solucionarlo.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
